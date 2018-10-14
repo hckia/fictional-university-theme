@@ -13,23 +13,57 @@
           <div class="site-footer__col-two">
             <h3 class="headline headline--small">Explore</h3>
             <nav class="nav-list">
+              <!-- For custom themes you'll want to control your navigation menu through a unordered 
+                   list, but for more generic themes there's another way (see below the ul tag, and check 
+                   for more information in functions.php under the university_features function).
+                   One benefit of using wp_nav_menu function as you'll see below in this file is that it
+                   will "highlight" an active page. this is because it will add 'current-menu-item' 
+                   className to our list items dynamically, and then you can control its value through
+                   css
+              -->
               <ul>
                 <li><a href="<?php echo site_url('/about-us')?>">About Us</a></li>
                 <li><a href="#">Programs</a></li>
                 <li><a href="#">Events</a></li>
                 <li><a href="#">Campuses</a></li>
               </ul>
+              <!-- our dynamic menu, generated from our WordPress dashboard through our 
+                   university-features function in functions.php     
+              -->
+              <!-- Be sure to remove the spaces after the greater than less than signs, and between the
+         question mark and php < ? php 
+                wp_nav_menu(array(
+                  'theme_location' => 'footerLocationOne'
+                ));
+              ? > -->
             </nav>
           </div>
 
           <div class="site-footer__col-three">
             <h3 class="headline headline--small">Learn</h3>
             <nav class="nav-list">
+              <!-- For custom themes you'll want to control your navigation menu through a unordered 
+                   list, but for more generic themes there's another way (see below the ul tag, and check 
+                   for more information in functions.php under the university_features function).
+                   One benefit of using wp_nav_menu function as you'll see below in this file is that it
+                   will "highlight" an active page. this is because it will add 'current-menu-item' 
+                   className to our list items dynamically, and then you can control its value through
+                   css
+              -->
               <ul>
                 <li><a href="#">Legal</a></li>
                 <li><a href="<?php echo site_url('/privacy-policy')?>">Privacy</a></li>
                 <li><a href="#">Careers</a></li>
               </ul>
+              <!-- our dynamic menu, generated from our WordPress dashboard through our 
+                   university-features function in functions.php     
+              -->
+              <!-- Be sure to remove the spaces after the greater than less than signs, and between the
+         question mark and php < ? php 
+                wp_nav_menu(array(
+                  'theme_location' => 'footerLocationTwo'
+                ));
+              ? > -->
             </nav>
           </div>
         </div>
