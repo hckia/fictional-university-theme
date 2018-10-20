@@ -50,28 +50,45 @@ front-page.php will change how your home page looks, should you modify http://lo
       <div class="full-width-split__inner">
         <h2 class="headline headline--small-plus t-center">From Our Blogs</h2>
 
-        <div class="event-summary">
-          <a class="event-summary__date event-summary__date--beige t-center" href="#">
-            <span class="event-summary__month">Jan</span>
-            <span class="event-summary__day">20</span>  
-          </a>
-          <div class="event-summary__content">
-            <h5 class="event-summary__title headline headline--tiny"><a href="#">We Were Voted Best School</a></h5>
-            <p>For the 100th year in a row we are voted #1. <a href="#" class="nu gray">Read more</a></p>
-          </div>
-        </div>
-        <div class="event-summary">
-          <a class="event-summary__date event-summary__date--beige t-center" href="#">
-            <span class="event-summary__month">Feb</span>
-            <span class="event-summary__day">04</span>  
-          </a>
-          <div class="event-summary__content">
-            <h5 class="event-summary__title headline headline--tiny"><a href="#">Professors in the National Spotlight</a></h5>
-            <p>Two of our professors have been in national news lately. <a href="#" class="nu gray">Read more</a></p>
-          </div>
-        </div>
-        
-        <p class="t-center no-margin"><a href="#" class="btn btn--yellow">View All Blog Posts</a></p>
+        <!-- The result of the following code will only be one, why? because in our instance we made a custom front-page, separating it from the
+        blog posts page. By design, a Home page will only have itself. Duh. 
+        < ?php 
+            while(have_posts()){
+                the_post(); ?>
+                <li>< ?php the_title(); ? ></li>
+           < ? php }
+        ? >
+        -->
+        <?php
+            /* 
+                Custom queries are obviously computationally heavy, but this allows us to pull a few posts for our home page. Would probably want
+                to leverage cache to avoid a lot of unnecessary heavy lifting. 
+            */
+            $homePagePosts = new WP_Query(array(
+                'posts_per_page' => 2 /*,
+                'category_name' => 'awards' */ /*,
+                'post-type' => 'page' */ /* post-type defaults to post, but if you say page you'll get a list of pages. */
+            )); 
+            /* 
+                In the while loop below we're using our homePagePosts variable and checking inside it for posts. without this, have_posts will
+                be tied to the default query. same goes for the_posts
+            */
+            while($homePagePosts->have_posts()){
+                $homePagePosts->the_post(); ?>
+                <div class="event-summary">
+                <a class="event-summary__date event-summary__date--beige t-center" href="<?php the_permalink();?>">
+                    <span class="event-summary__month"><?php the_time('M');?></span>
+                    <span class="event-summary__day"><?php the_time('d');?></span>  
+                </a>
+                <div class="event-summary__content">
+                    <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink();?>"><?php the_title();?></a></h5>
+                    <p><?php echo wp_trim_words(get_the_content(), 18); ?> <a href="<?php the_permalink();?>" class="nu gray">Read more</a></p>
+                </div>
+                </div>
+                <!-- wp_reset_postdata is called to clean up after a custom query. -->
+           <?php } wp_reset_postdata();
+        ?>        
+        <p class="t-center no-margin"><a href="<?php echo site_url('/blog'); ?>" class="btn btn--yellow">View All Blog Posts</a></p>
       </div>
     </div>
   </div>
