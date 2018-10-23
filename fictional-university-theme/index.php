@@ -1,7 +1,7 @@
 <?php
   /* 
     Index.php is a generic fallback. A last line insurance policy. Often you want something more specific like single.php for individual posts, 
-    or page.php for individual pages, or archive.php for archives, etc.
+    or page.php for individual pages, or archive.php for archives, etc. 
   */
   get_header();
   ?>

@@ -53,4 +53,20 @@
         // register_nav_menu('footerLocationTwo', 'Footer Location Two');
     }
     add_action('after_setup_theme', 'university_features');
+
+    /* 
+        Creating a custom post type. This can be done in themes, or plugins, but best practice is to use it within mu-plugins
+        NOTE: When you create a new custom post type you need to resave the permalink structure, even
+        if there are no changes. For performance reasons, WordPress only updates the Permalink structure at key moments. To resave the permalink
+        structure go to your WordPress Dashboard > Settings > Permalink > Scroll down and Select 'save'.
+        Also note that single.php will be used as a custom post type template until you create one yourself. If we want a custom template for our
+        custom post-type, we need a new php file named single-{custom-post-type-key-word}.php. For example in the case of events, this would be
+        single-event.php. This is also truve for archive.php (archive-{custom-post-type-key-word}.php).
+    */
+    
+    /* 
+        end of custom post type. If we were to delete the custom post type data above and we tried to access a post type 
+        page we would receive "invalid post type". That is, unless we put it in plugins, or mu-plugins. In this case we have moved the custom
+        post type to mu-plugins/university-post-type.php
+    */
 ?>

@@ -1,4 +1,4 @@
-exports.themeLocation = './fictional-university-theme/';
+exports.themeLocation = '/c/Users/hckia/Projects/php-test/fictional-university-theme/';
 exports.urlToPreview = 'http://localhost';
 
 // If you're using Local by Flywheel you will
