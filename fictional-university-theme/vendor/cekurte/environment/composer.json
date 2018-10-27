@@ -1,0 +1,36 @@
+{
+    "name": "cekurte/environment",
+    "description": "A library to get the values from environment variables and process to php data types",
+    "keywords": ["env", "environment", "config", "process", "variables", "data", "types"],
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8",
+        "cekurte/tdd": "^1.0.1",
+        "sensiolabs/security-checker": "^3.0",
+        "squizlabs/php_codesniffer": "^2.3"
+    },
+    "authors": [
+        {
+            "name": "João Paulo Cercal",
+            "email": "jpcercal@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Cekurte\\Environment\\": "src/"
+        },
+        "files": [
+            "src/env.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cekurte\\Environment\\Test\\": "test/"
+        }
+    }
+}

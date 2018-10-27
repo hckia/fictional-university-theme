@@ -85,8 +85,7 @@ a {
 abbr[title] {
   border-bottom: none; /* 1 */
   text-decoration: underline; /* 2 */
-  -webkit-text-decoration: underline dotted;
-          text-decoration: underline dotted; /* 2 */
+  text-decoration: underline dotted; /* 2 */
 }
 
 /**
@@ -357,11 +356,7 @@ template {
 
     display: block;
     box-sizing: border-box;
-
-    -webkit-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
+    user-select: none;
 
     -webkit-touch-callout: none;
     -khtml-user-select: none;
@@ -394,8 +389,7 @@ template {
 .slick-slider .slick-track,
 .slick-slider .slick-list
 {
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 
 .slick-track
@@ -650,25 +644,12 @@ p, li {
     text-decoration: underline;
   }
 
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
 @keyframes spin {
   0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
@@ -679,8 +660,7 @@ p, li {
   height: 24px;
   border: 0.25rem solid rgba(0, 0, 0, 0.2);
   border-top-color: black;
-  -webkit-animation: spin 1s infinite linear;
-          animation: spin 1s infinite linear;
+  animation: spin 1s infinite linear;
 }
 
 .c-orange {color: #F95738}
@@ -763,6 +743,11 @@ p, li {
 .nav-list a:hover {
   color: #0D3B66;
   text-decoration: underline;
+}
+
+.one-third,
+.two-thirds {
+  margin-top: 50px;
 }
 
 .one-half,
@@ -896,14 +881,12 @@ p, li {
   transition: all .4s ease-out;
   position: absolute;
   visibility: hidden;
-  -webkit-transform: scale(.2);
-          transform: scale(.2);
+  transform: scale(.2);
   opacity: 0;
 }
 
 .like-box[data-exists="yes"] .fa-heart {
-  -webkit-transform: scale(1);
-          transform: scale(1);
+  transform: scale(1);
   visibility: visible;
   opacity: 1;
 }
@@ -1136,18 +1119,7 @@ body.login {
 
 .note-active-field {
   border: 1px solid #DDD;
-  -webkit-animation: pulseBorder .75s alternate infinite;
-          animation: pulseBorder .75s alternate infinite;
-}
-
-@-webkit-keyframes pulseBorder {
-  0% {
-    border: 1px solid #FFF;
-  }
-
-  100% {
-    border: 1px solid #CCC;
-  }
+  animation: pulseBorder .75s alternate infinite;
 }
 
 @keyframes pulseBorder {
@@ -1221,18 +1193,14 @@ body.login {
     top: -20px;
     padding-top: 58px;
     opacity: 0;
-    -webkit-transform: translateY(-20%);
-            transform: translateY(-20%);
-    transition: opacity .3s ease-out, visibility .3s ease-out, -webkit-transform .3s ease-out;
+    transform: translateY(-20%);
     transition: opacity .3s ease-out, visibility .3s ease-out, transform .3s ease-out;
-    transition: opacity .3s ease-out, visibility .3s ease-out, transform .3s ease-out, -webkit-transform .3s ease-out;
     padding-bottom: 20px;
   }
 
 .site-header__menu--active {
       opacity: 1;
-      -webkit-transform: translateY(0);
-              transform: translateY(0);
+      transform: translateY(0);
       visibility: visible;
     }
 
@@ -1241,8 +1209,7 @@ body.login {
 .site-header__menu {
       visibility: visible;
       opacity: 1;
-      -webkit-transform: translateY(0) scale(1);
-              transform: translateY(0) scale(1);
+      transform: translateY(0) scale(1);
       position: static;
       background-color: transparent;
       float: right;
@@ -1635,11 +1602,8 @@ body.login {
   background-color: rgba(255, 255, 255, .96);
   visibility: hidden;
   opacity: 0;
-  -webkit-transform: scale(1.09);
-          transform: scale(1.09);
-  transition: opacity .3s, visibility .3s, -webkit-transform .3s;
+  transform: scale(1.09);
   transition: opacity .3s, transform .3s, visibility .3s;
-  transition: opacity .3s, transform .3s, visibility .3s, -webkit-transform .3s;
   box-sizing: border-box;
 }
 
@@ -1680,8 +1644,7 @@ body.admin-bar .search-overlay {
 .search-overlay--active {
     visibility: visible;
     opacity: 1;
-    -webkit-transform: scale(1);
-            transform: scale(1);
+    transform: scale(1);
   }
 
 .search-overlay__section-title {
@@ -1788,15 +1751,12 @@ body.admin-bar .search-overlay {
 
 .professor-card__image {
     display: block;
-    transition: opacity .3s ease-out, -webkit-transform .3s ease-out;
     transition: opacity .3s ease-out, transform .3s ease-out;
-    transition: opacity .3s ease-out, transform .3s ease-out, -webkit-transform .3s ease-out;
   }
 
 .professor-card:hover .professor-card__image {
     opacity: .80;
-    -webkit-transform: scale(1.1) rotate(4deg);
-            transform: scale(1.1) rotate(4deg);
+    transform: scale(1.1) rotate(4deg);
   }
 
 .professor-card__name {
@@ -2131,8 +2091,7 @@ margin: 20px 0;
 .metabox--position-up {
     position: absolute;
     top: 0;
-    -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
+    transform: translateY(-50%);
   }
 
 .metabox--with-home-link {

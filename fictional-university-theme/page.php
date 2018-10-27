@@ -6,16 +6,17 @@
     get_header();
 
     while(have_posts()){
-        the_post();?>
-  <div class="page-banner">
-    <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('/images/ocean.jpg')?>);"></div>
-    <div class="page-banner__content container container--narrow">
-      <h1 class="page-banner__title"><?php the_title(); ?></h1>
-      <div class="page-banner__intro">
-        <p>Don't forget to replace me later.</p>
-      </div>
-    </div>  
-  </div>
+        the_post();
+        /*
+        array below is for testing pageBanner on the about us page.
+        array(
+            'title' => 'Hello there this is the title',
+            'subtitle' => 'We are a great school that has been around for a long time!',
+            'photo' => 'https://upload.wikimedia.org/wikipedia/commons/8/86/360-degree_Panorama_of_the_Southern_Sky_edit.jpg'
+        )
+        */
+        pageBanner();
+        ?>
 
   <div class="container container--narrow page-section">
 

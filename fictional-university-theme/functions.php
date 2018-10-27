@@ -1,4 +1,41 @@
 <?php
+require __DIR__ . '/vendor/autoload.php';
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
+    /* 
+    the PageBanner function was added midway through this tutorial. It takes an argument that's an associative array so that each of our page
+    templates can pass their own values. This serves as a middle ground between redundant code, and non-specific values. The first example of
+    this can be found in page.php
+    $args = NULL makes the argument optional
+    */
+    function pageBanner($args = NULL) {
+        if(!$args['title']){
+            $args['title'] = get_the_title();
+        }
+        if(!$args['subtitle']){
+            $args['subtitle'] = get_field('page_banner_subtitle');
+        }
+        if(!$args['photo']){
+            if(get_field('page_banner_background_image')){
+                $args['photo'] = get_field('page_banner_background_image')['sizes']['pageBanner'];
+            } else {
+                $args['photo'] = get_theme_file_uri('/images/ocean.jpg');
+            }
+        }
+        ?>
+        <div class="page-banner">
+            <!-- we can do $pageBannerImage['url'], but that would give us the massive uncropted default image. 
+            echo $pageBannerImage['sizes']['pageBanner'] would be better.
+            -->
+            <div class="page-banner__bg-image" style="background-image: url(<?php echo $args['photo']; ?>);"></div>
+            <div class="page-banner__content container container--narrow">
+            <h1 class="page-banner__title"><?php echo $args['title'] ?></h1>
+            <div class="page-banner__intro">
+                <p><?php echo $args['subtitle']; ?></p>
+            </div>
+            </div>  
+        </div>
+    <?php }
 
     function university_files() {
         /*
@@ -51,6 +88,19 @@
         */
         // register_nav_menu('footerLocationOne', 'Footer Location One');
         // register_nav_menu('footerLocationTwo', 'Footer Location Two');
+
+        /* enables featured images for post types (blog posts), but we need to do additional work for custom post types. university-post-types.php 
+        under Professor has an example of adding support for featured images (the string is called 'thumbnail')*/
+        add_theme_support('post-thumbnails');
+        /* create image sizes 
+        first argument is the title for our size
+        second is width
+        third is height
+        fourth is cropped (true or false)
+        */
+        add_image_size('professorLandscape', 400, 260, true);
+        add_image_size('professorPortrait', 480, 650, true);
+        add_image_size('pageBanner', 1500,350, true);
     }
     add_action('after_setup_theme', 'university_features');
 
@@ -69,4 +119,49 @@
         page we would receive "invalid post type". That is, unless we put it in plugins, or mu-plugins. In this case we have moved the custom
         post type to mu-plugins/university-post-type.php
     */
+    /* 
+        pre_get_posts gives a change to adjust the query before an event. So we will pass our function the $query variable, which will contain 
+        that information.
+    */
+    function university_adjust_queries($query) {
+        /* 
+            without the control statements below, (for example) $query->set('post_per_page', 1) this function would effect EVERY post/page, including the 
+            dashboard.
+        */
+        if(!is_admin() AND is_post_type_archive('program') AND $query->is_main_query()){
+            $query->set('orderby','title');
+            $query->set('order','ASC');
+            $query->set('posts_per_page',-1);
+        }
+        /* the query->$is_main_query() checks to make sure we don't manipulate custom queries */
+        if(!is_admin() AND is_post_type_archive('event') AND $query->is_main_query()){
+            /* we don't actually want to manipulate post_per_page, but we can use our custom Query from front-page.php starting around line 30+ to
+            50 as a reference. 
+            For example, we had 'meta_key' => 'event_date', here we would write set('meta_key', 'event_date')
+            */
+            $today = date('Ymd');
+            $query->set('meta_key', 'event_date');
+            $query->set('orderby', 'meta_value_num');
+            $query->set('order','ASC');
+            $query->set('meta_query', array(
+              array(
+                'key' => 'event_date',
+                'compare' => '>=',
+                'value' => $today,
+                /* type doesn't have to be here, but lets be specific since we were with meta_value_num */
+                'type' => 'numeric'
+              )
+              ));
+        }
+    }
+
+    add_action('pre_get_posts', 'university_adjust_queries');
+
+// add api for google maps
+    function universityMapKey($api) {
+        $api['key'] = getenv('GOOGLE_MAPS_API');
+        return $api;
+    }
+
+    add_filter('acf/fields/google_map/api', 'universityMapKey');
 ?>

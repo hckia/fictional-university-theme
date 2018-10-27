@@ -3,14 +3,17 @@
     archive.php is for archive pages such as /author/{authorname}, or /category/{categoryname}
   */
   get_header();
+  pageBanner(array(
+    'title' => get_the_archive_title(),
+    'subtitle' => get_the_archive_description()
+  ));
   ?>
-  <div class="page-banner">
+  <!-- This Div is not necessary anymore because of the pageBanner above. leaving it for notes on prior lessons <div class="page-banner">
     <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('/images/ocean.jpg')?>);"></div>
     <div class="page-banner__content container container--narrow">
       <h1 class="page-banner__title">
-      <!-- grab the archive title -->
-      <?php the_archive_title(); ?>
-      <!-- 
+      grab the archive title
+      < ? php the_archive_title(); ?>
       If you want finer granular control, and you don't use dates, the options below for single_cat_title for categories and the_author function
       will do nicely, however, if you have dates, the option above with (the _archive_title()) is probably best, as it will simply give you the
       archive title of whatever you're on. (month, day, year, author, category, etc).    
@@ -19,17 +22,16 @@
       }
       if (is_author()){
         echo 'Posts by '; the_author();
-      } ? > </h1> -->
+      } ? > </h1>
       <div class="page-banner__intro">
-        <!-- the_archive_description will grab the description of that archive, if it has one. In the case of an author it will grab it from
+        the_archive_description will grab the description of that archive, if it has one. In the case of an author it will grab it from
         Users > Your Profile > Biographical Info within your WordPress dashboard. 
         For Categories if you go to Posts > Categories > click on a specific Category's hyperlink > Description... This will be where you place
         content for the_archive_description to grab data for that specific category.
-        -->
-        <p><?php the_archive_description(); ?></p>
+        <p>< ? php the_archive_description(); ?></p>
       </div>
     </div>  
-  </div>
+  </div> -->
 
   <!-- class attributes classnames will center our blog posts on the page -->
   <div class="container container--narrow page-section">
