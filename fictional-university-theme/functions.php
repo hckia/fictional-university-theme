@@ -39,16 +39,19 @@ $dotenv->load();
 
     function university_files() {
         /*
-          First line calls our JavaScript files
-          Second line calls our google fonts
-          Third line calls our font-icons in footer from https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
-          Fourth line calls our stylesheet style.add_cssclass
+          First Line embeds js file from Google's server
+          Second line calls our JavaScript files
+          Third line calls our google fonts
+          Fourth line calls our font-icons in footer from https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
+          Fifth line calls our stylesheet style.add_cssclass
           to avoid js caching, you can replace our version with microtime() - no strings
           to avoid css caching, add two additional arguments after get_stylesheet_uri() like so - ... get_stylesheet_uri(), NULL, microtime())
           alternatively we could go to Chrome Browser inspector and under Network select Disable cache, but... 
           1. this disables caching on ALL files/sites. 
           2. only works on Chrome
           */
+        $mapsUrl =  '//maps.googleapis.com/maps/api/js?key='. getenv("GOOGLE_MAPS_API");
+        wp_enqueue_script('googleMap', $mapsUrl , NULL, '1.0', true);
         wp_enqueue_script('main-university-js', get_theme_file_uri('/js/scripts-bundled.js'), NULL, microtime(), true);
         wp_enqueue_style('custom-google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
         wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');

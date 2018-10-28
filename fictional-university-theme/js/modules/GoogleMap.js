@@ -1,5 +1,6 @@
 import $ from 'jquery';
 
+//documentation from https://www.advancedcustomfields.com/resources/google-map/
 class GMap {
   constructor() {
     var self = this;
