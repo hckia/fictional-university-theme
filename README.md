@@ -16,7 +16,7 @@ To reference a custom query, you can view single-progra.php custom query around 
 
 ``` gulp scripts ``` manual rebuild after js css changes [intro to gulp here](https://css-tricks.com/gulp-for-beginners/) [docs here](https://gulpjs.com/docs/en/getting-started/quick-start)
 
-``` sudo gulp watch ``` creates a proxy of web server that will reload whenever changes are made. Will also rebuild after js css changes
+``` sudo gulp watch ``` creates a proxy of web server that will reload whenever changes are made. Will also rebuild after js css changes. Note that sudo is required in wslfor auto reloading to work.
 
 ### WSL notes
 
