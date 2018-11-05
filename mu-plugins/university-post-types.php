@@ -106,6 +106,8 @@
         // Professor Post Type
 
         register_post_type('professor', array(
+            // add custom route to WordPress API http://localhost:3000/wp-json/wp/v2/professor
+            'show_in_rest' => true,
             /* thumbnail value adds Featured images to our custom post type professor*/
             'supports' => array('title', 'editor', 'thumbnail'),
             'public' => true,

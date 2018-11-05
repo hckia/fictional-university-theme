@@ -2,6 +2,29 @@
 require __DIR__ . '/vendor/autoload.php';
 $dotenv = new Dotenv\Dotenv(__DIR__);
 $dotenv->load();
+
+/******** 
+Modify WordPress REST API
+*********/
+function university_custom_rest(){
+    /*
+        register_rest_field takes three args
+        1st arg - the post type you want to customize
+        2nd arg - what you want to name the new field
+        3rd arg - an array on how we want to manage this field
+    */
+    register_rest_field('post','authorName', array(
+        'get_callback' => function() {return get_the_author();}
+    ));
+    /*You can add as many of these as you want to modify the native REST API, For example... 
+    
+    register_rest_field('post','perfectlyCroppedImageURL', array(
+        'get_callback' => function() {return ...}
+    ));
+    */
+}
+
+add_action('rest_api_init', 'university_custom_rest');
     /* 
     the PageBanner function was added midway through this tutorial. It takes an argument that's an associative array so that each of our page
     templates can pass their own values. This serves as a middle ground between redundant code, and non-specific values. The first example of
@@ -44,6 +67,8 @@ $dotenv->load();
           Third line calls our google fonts
           Fourth line calls our font-icons in footer from https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
           Fifth line calls our stylesheet style.add_cssclass
+          Sixth: wp_localize_script takes three arguments 1st is name or $handle 2nd declare a variable 3rd an array of data to be available. In this
+          case we will be adding root_url to make our sites code more dynamic, not requiring us to hardcode our root url.
           to avoid js caching, you can replace our version with microtime() - no strings
           to avoid css caching, add two additional arguments after get_stylesheet_uri() like so - ... get_stylesheet_uri(), NULL, microtime())
           alternatively we could go to Chrome Browser inspector and under Network select Disable cache, but... 
@@ -52,11 +77,13 @@ $dotenv->load();
           */
         $mapsUrl =  '//maps.googleapis.com/maps/api/js?key='. getenv("GOOGLE_MAPS_API");
         wp_enqueue_script('googleMap', $mapsUrl , NULL, '1.0', true);
-        wp_enqueue_script('live-search-javascript', get_theme_file_uri('/js/modules/Search.js'), array('jquery'), NULL, true);
         wp_enqueue_script('main-university-js', get_theme_file_uri('/js/scripts-bundled.js'), NULL, microtime(), true);
         wp_enqueue_style('custom-google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
         wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
         wp_enqueue_style('university_main_styles', get_stylesheet_uri(), NULL, microtime());
+        wp_localize_script('main-university-js', 'universityData', array(
+            'root_url' => get_site_url()
+        ));
     }
     /* add_action takes two string arguments */
     /* WordPress lets us give it instructions through this function The first instruction 
