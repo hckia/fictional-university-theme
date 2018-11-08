@@ -62,68 +62,70 @@ class Search {
     }
 
     getResults(){
-        /*
-        We use the ES6 syntax primarily for one reason other than the fact that is less verbose.
-        With the ES6 function this does not get bound to $.getJSON, so when we use this.resultsDiv, it knows we are referring to OUR objects
-        property, and not that of whatever api we are referencing.
-        Alternatively we could have used the older syntax and bound this to the function like so...
-        function(posts){
-
-        }.bind(this)
-
-        we also need to use the when/then functions from JQuery, since these will allow us to make two requests (post and pages) asynchronously...
-        */
-        $.when(
-            //unveristyData.root_url is from functions.php in our university_Files function
-            $.getJSON(universityData.root_url + '/wp-json/wp/v2/posts?search=' + this.searchField.val()), 
-                $.getJSON(universityData.root_url + '/wp-json/wp/v2/pages?search=' + this.searchField.val())
-            ).then((posts, pages) => {
-            /* 
-            Using string to output html is problematic since it requires us to stay on one line, or concatinate each line to the next. 
-            Instead of single or double quotes, we can use something called a 'template literal'
-            referenced with two backticks (``) to output our html on multiple lines.
-            if we want to reference our posts object we can use ${} which in this context does NOT refer to JQuery. this is a native ES syntax
-            that informs JavaScript that what we are about to type within ${} should be referenced as JavaScript code.
-            */
-            /* 
-            In JavaScript Arrays have access to a function called map that allows us to loop through each item within an array.
-            this by default adds a comma at the end of each item, to remove this we can append .join('') to the end of that function. An empty join
-            tells JS we do not want any deliminator.
-            for example...
-            var testAarray = ['red','orange','yellow'];
-             this.resultsDiv.html(`
-                 <h2 class="search-overlay__section-title">General Information</h2>
-                 <ul class="link-list min-list">
-                 ${testAarray.map(post => `<li>${post}</li>`).join('')}
-                 </ul>
-             `);
- 
-             The result of this would be...
-             red
-             orange
-             yellow
-            */
-            /* ternary operator
-                $ { condition ? true : false }
-            */
-            /* 
-             arrays have a concat function that allows you to combine it with different arrays concat is kind of like appending. in this case we are
-             getting the results for searching posts, and pages, in two getJSON functions, and then combining our results
-             the posts and pages array now carry much information in regards to our asynchronous methods (call back functions). Since we only want to
-             combine data, we are focusing on this first array.
-            */
-            var combinedResults = posts[0].concat(pages[0]);
+        $.getJSON(universityData.root_url + '/wp-json/university/v1/search?term=' + this.searchField.val(), (results) => {
             this.resultsDiv.html(`
-                <h2 class="search-overlay__section-title">General Information</h2>
-                ${combinedResults.length ? '<ul class="link-list min-list">' : '<p>No General information matches that search</p>'}
-                <!-- template literals do not allow us to add traditional control statements, but we can use ternary operators... -->
-                ${combinedResults.map(result => `<li><a href="${result.link}">${result.title.rendered}</a> ${result.type == 'post' ? `by ${result.authorName}` : ''}</li>`).join('')}
-                ${combinedResults.length ? '</ul>' : ''}
+                <div class="row">
+                    <div class="one-third">
+                        <h2 class="search-overlay__section-title">General Information</h2>
+                        ${results.generalInfo.length ? '<ul class="link-list min-list">' : '<p>No General information matches that search</p>'}
+                        <!-- template literals do not allow us to add traditional control statements, but we can use ternary operators... -->
+                        ${results.generalInfo.map(result => `<li><a href="${result.permalink}">${result.title}</a> ${result.postType == 'post' ? `by ${result.authorName}` : ''}</li>`).join('')}
+                        ${results.generalInfo.length ? '</ul>' : ''}
+                    </div>
+                    <div class="one-third">
+                        <h2 class="search-overlay__section-title">Programs</h2>
+                        ${results.programs.length ? '<ul class="link-list min-list">' : `<p>No Program matches that search. <a href="${universityData.root_url}/programs">View all programs</a></p>`}
+                        <!-- template literals do not allow us to add traditional control statements, but we can use ternary operators... -->
+                        ${results.programs.map(result => `<li><a href="${result.permalink}">${result.title}</a></li>`).join('')}
+                        ${results.programs.length ? '</ul>' : ''}
+                        <h2 class="search-overlay__section-title">Professors</h2>
+                        ${results.professors.length ? '<ul class="professor-cards">' : '<p>No Professor matches that search.</p>'}
+                        <!-- template literals do not allow us to add traditional control statements, but we can use ternary operators... -->
+                        ${results.professors.map(result => `
+                            <li class="professor-card__list-item">
+                            <a class="professor-card" href="${result.permalink}">
+                            <img class="professor-card__image" src="${result.image}">
+                            <span class="professor-card__name">${result.title}</span>
+                            </a>
+                            </li>
+                        `).join('')}
+                        ${results.professors.length ? '</ul>' : ''}
+                    </div>
+                    <div class="one-third">
+                        <h2 class="search-overlay__section-title">Campuses</h2>
+                        ${results.campuses.length ? '<ul class="link-list min-list">' : `<p>No Campus matches that search.<a href="${universityData.root_url}/campuses"> View all Campuses</a></p>`}
+                        <!-- template literals do not allow us to add traditional control statements, but we can use ternary operators... -->
+                        ${results.campuses.map(result => `<li><a href="${result.permalink}">${result.title}</a></li>`).join('')}
+                        ${results.campuses.length ? '</ul>' : ''}
+                        <h2 class="search-overlay__section-title">Events</h2>
+                        ${results.events.length ? '' : `<p>No Events matches that search. <a href="${universityData.root_url}/events">View all Events</a></p>`}
+                        <!-- template literals do not allow us to add traditional control statements, but we can use ternary operators... -->
+                        ${results.events.map(result => `
+                            <div class="event-summary">
+                                <a class="event-summary__date t-center" href="${result.permalink}">
+                                <!-- 
+                                    the_field is a function provided by the plugin Advanced Custom Fields ( ACF ). event-date is a custom field built within that 
+                                    plugin. 
+                                    However, that's only if we use it independently, and display the entire date format represented within our Custom Field. If we
+                                    only want a portion of the Custom Fields data we can use the php DateTime class, and pass the ACF fucntion 'get_field' to return
+                                    the string of data, and then echo out formatted text.
+                                -->
+                                <span class="event-summary__month">${result.month}</span>
+                                <!-- Taking our work from above, and formatting the day. D for day name (Fri) d for day number (20th) -->
+                                <span class="event-summary__day">${result.day}</span>  
+                                </a>
+                                <div class="event-summary__content">
+                                <h5 class="event-summary__title headline headline--tiny"><a href="${result.permalink}">${result.title}</a></h5>
+                                <!-- -->
+                                <p>${result.description}<a href="${result.permalink}" class="nu gray">Learn more</a></p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
             `);
-            this.isSpinnerVisible = false;            
-        }, () => {
-            this.resultsDiv.html('<p>Unexpected error. Please try again</p>');
-        } );
+        });
+        //previous method marked in get-json-asynchronous-method.md
 
     }
 
@@ -153,6 +155,8 @@ class Search {
     Boolean used to ensure overlay only fires when overlay is not open
     */
     this.isOverlayOpen = true;
+    // since our search icon is a link, we need to return false so the link is ignored IF JavaScript is running
+    return false;
   }
 
   closeOverlay() {

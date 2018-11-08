@@ -89,7 +89,9 @@
         // Program Post Type
 
         register_post_type('program', array(
-            'supports' => array('title', 'editor'),
+            // editor was removed from the supports subarray because we have a main body custom field. that custom field is used because the default WP_Query
+            // wont add it to search results. This helps if Bilogy mentions Math...
+            'supports' => array('title'),
             'rewrite' => array('slug' => 'programs'),
             'has_archive' => true,
             'public' => true,

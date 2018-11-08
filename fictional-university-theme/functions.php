@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
+require get_theme_file_path('/inc/search-route.php');
 $dotenv = new Dotenv\Dotenv(__DIR__);
 $dotenv->load();
 
