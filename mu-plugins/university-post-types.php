@@ -19,6 +19,8 @@
         */
         // Campus post type
         register_post_type('campus', array(
+            'capability_type' => 'campus',
+            'map_meta_cap' => true,
             /* supports will give an events post type features, such as excerpts, etc. The custom fields section allows us to enter a new custom 
             field, which you will see when you edit a custom post. However, if you use a plugin like ACF, you won't need this line. 
             Please refer to advanced-custom-field-notes.md
@@ -53,6 +55,14 @@
         ));
         // event post type
         register_post_type('event', array(
+            /*capability_type by default is post. we've chosen to use this because we want more grandular control over what our custom user roles 
+            can use. 
+            */
+            'capability_type' => 'event',
+            /* without this line of code we would need to program our own custom logic for when these capabilities would be required. For example
+            , you want to grant permissions to EVERYONE on a specific day, or something like that.
+            */
+            'map_meta_cap' => true,
             /* supports will give an events post type features, such as excerpts, etc. The custom fields section allows us to enter a new custom 
             field, which you will see when you edit a custom post. However, if you use a plugin like ACF, you won't need this line. 
             Please refer to advanced-custom-field-notes.md

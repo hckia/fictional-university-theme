@@ -9,7 +9,7 @@ To reference a custom query, you can view single-progra.php custom query around 
 
 ## dependencies
 
-[Plugins](coming soon)
+[Plugins](./plugins-used.md)
 [composer dependency](https://github.com/vlucas/phpdotenv) added to hide API key
 
 ## commands

@@ -23,8 +23,11 @@ body.login {
   color: $mainBlue;
   font-size: 30px;
   font-weight: 300;
-  background-image: none;
-  width: auto;
-  height: auto;
+  background-image: url('./css/modules/Goat-Through-Doggie-Door.gif');
+  height:320px;
+  width:320px;
+  background-size: 320px 320px;
+  background-repeat: no-repeat;
+  padding-bottom: 30px;
   text-indent: 0;
 }

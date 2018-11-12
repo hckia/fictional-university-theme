@@ -1,1 +1,11 @@
-A advanced-custom-fields 5.7.7 I akismet 4.0.8 I hello 1.7 A manual-image-crop 1.12 - resize images on the fly to sit specific areas, mostly banner images A regenerate-thumbnails 3.0.2 - regenerate thumbnails after new add_image_size() settings are added to functions.php. Requires GD php so most likely this will NOT work on a production server. M university-post-types - custom plugin designed so that it will remain active even if themese are changed or plugins are deactivated.
++------------------------+----------+--------+---------+
+| name                   | status   | update | version |
++------------------------+----------+--------+---------+
+| advanced-custom-fields | active   | none   | 5.7.7   |
+| akismet                | inactive | none   | 4.0.8   |
+| hello                  | inactive | none   | 1.7     |
+| manual-image-crop      | active   | none   | 1.12    |
+| members                | active   | none   | 2.1.0   |
+| regenerate-thumbnails  | active   | none   | 3.0.2   |
+| university-post-types  | must-use | none   |         |
++------------------------+----------+--------+---------+
