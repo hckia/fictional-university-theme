@@ -9,7 +9,7 @@
         pageBanner();
         ?>
 
-        <div class="container container--narrow page-sectiodn">
+        <div class="container container--narrow page-section">
 
 
             <div class="generic-content">
@@ -21,6 +21,53 @@
                     </div>
 
                     <div class="two-thirds">
+                        <?php 
+                            $likeCount = new WP_Query(array(
+                                'post_type'=> 'like',
+                                /*we need to use a meta query because we only want to pull in liked posts where the professors 
+                                liked id matches the professor page */
+                                'meta_query' => array(
+                                    array(
+                                        'key' => 'like_professor_id',
+                                        'compare' => '=',
+                                        'value' => get_the_ID()
+                                    )
+                                )
+                            ));
+
+                            $existStatus = 'no';
+                            /* if we don't have the first if statement below, logged out users will see a filled in heart, when it should be empty, they 
+                            haven't liked nor can they! */
+                            if(is_user_logged_in()){
+                                $existQuery = new WP_Query(array(
+                                    'author' => get_current_user_id(),
+                                    'post_type'=> 'like',
+                                    /*we need to use a meta query because we only want to pull in liked posts where the professors 
+                                    liked id matches the professor page */
+                                    'meta_query' => array(
+                                        array(
+                                            'key' => 'like_professor_id',
+                                            'compare' => '=',
+                                            'value' => get_the_ID()
+                                        )
+                                    )
+                                ));
+                                if($existQuery->found_posts){
+                                    $existStatus = 'yes';
+                                }
+                            }
+
+                        ?>
+                        <!-- 
+                            You can read more about how data-exists works in this file on the following line... 
+                            fictional-university-theme/css/modules/shame.css:282:.like-box[data-exists="yes"] .fa-heart {
+                            fictional-university-theme/css/modules/shame.css:288:.like-box[data-exists="yes"] .fa-heart-o {
+                        -->
+                        <span class="like-box" data-like="<?php echo $existQuery->posts[0]->ID; ?>" data-professor="<?php the_id(); ?>" data-exists="<?php echo $existStatus; ?>">
+                            <i class="fa fa-heart-o" aria-hidden="true"></i>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <span class="like-count"><?php echo $likeCount->found_posts; ?></span>
+                        </span>
                         <?php the_content(); ?>
                     </div>
                 </div>

@@ -55,7 +55,7 @@
         ));
         // event post type
         register_post_type('event', array(
-            /*capability_type by default is post. we've chosen to use this because we want more grandular control over what our custom user roles 
+            /*capability_type by default is post. we've chosen to use this because we want more granular control over what our custom user roles 
             can use. 
             */
             'capability_type' => 'event',
@@ -132,6 +132,52 @@
             ),
             'menu_icon' => 'dashicons-welcome-learn-more'
         ));
+
+        // Note Post Type
+
+        register_post_type('note', array(
+            /* capability_type by default is post. we've chosen to use this key because we want more granular control over what our custom user roles 
+            can use. By setting a capbility_type to whatever, we're setting up new perms
+            */
+            'capability_type' => 'note',
+            // map_meta_cap will enforce our permissions at the right time and place
+            'map_meta_cap' => true,
+            // add custom route to WordPress API http://localhost:3000/wp-json/wp/v2/note
+            'show_in_rest' => true,
+            'supports' => array('title', 'editor'),
+            // notes are private, so public is false, duh
+            'public' => false,
+            // setting public to false will hide the post type, but to see it in our dashboard we can use show_ui
+            'show_ui' => true,
+            'labels' => array(
+                'name' => 'Note',
+                'add_new_item' => 'Add A New Note',
+                'edit_item' => 'Edit Note',
+                'all_items' => 'All Notes',
+                'singular_name' => 'Note'
+            ),
+            'menu_icon' => 'dashicons-welcome-write-blog'
+        ));
+
+        // Like Post Type
+
+        register_post_type('like', array(
+
+            'supports' => array('title'),
+            // notes are private, so public is false, duh
+            'public' => false,
+            // setting public to false will hide the post type, but to see it in our dashboard we can use show_ui
+            'show_ui' => true,
+            'labels' => array(
+                'name' => 'Like',
+                'add_new_item' => 'Add A New Like',
+                'edit_item' => 'Edit Like',
+                'all_items' => 'All Likes',
+                'singular_name' => 'Like'
+            ),
+            'menu_icon' => 'dashicons-heart'
+        ));  
+
     }
     /* 
         init argument is used for a custom post type

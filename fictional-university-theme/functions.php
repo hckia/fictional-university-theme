@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 require get_theme_file_path('/inc/search-route.php');
+require get_theme_file_path('/inc/like-route.php');
 $dotenv = new Dotenv\Dotenv(__DIR__);
 $dotenv->load();
 
@@ -16,6 +17,10 @@ function university_custom_rest(){
     */
     register_rest_field('post','authorName', array(
         'get_callback' => function() {return get_the_author();}
+    ));
+
+    register_rest_field('note','userNoteCount', array(
+        'get_callback' => function() {return count_user_posts(get_current_user_id(),'note');}
     ));
     /*You can add as many of these as you want to modify the native REST API, For example... 
     
@@ -84,7 +89,12 @@ add_action('rest_api_init', 'university_custom_rest');
         // will only load CSS on the frontend, see function towards the end of the functions.php file for how to load it in other places.
         wp_enqueue_style('university_main_styles', get_stylesheet_uri(), NULL, microtime());
         wp_localize_script('main-university-js', 'universityData', array(
-            'root_url' => get_site_url()
+            'root_url' => get_site_url(),
+            /* everytime we successfully log into WordPress there will be a secret property we can see if we check the view source of the page named 
+            'nonce' that equals a randomly generated number that WordPress generated for our users session.
+            example: var universityData = {"root_url":"http:\/\/localhost:3000","nonce":"563825"};
+            */
+            'nonce' => wp_create_nonce('wp_rest')
         ));
     }
     /* add_action takes two string arguments */
@@ -252,4 +262,27 @@ function ourLoginTitle() {
 }
 
 add_filter('login_headertitle', 'ourLoginTitle');
+
+// Force note posts to be private
+
+function makeNotePrivate($data, $postarr){
+    //cleaning our data of any code including html
+    if($data['post_type'] == 'note'){
+        //this will only run if user has reached its max, and the post does not have an ID
+        if(count_user_posts(get_current_user_id(),'note') > 3 AND !$postarr['ID']){
+            die("You have reached your note limit.");
+        }
+        $data['post_content'] = sanitize_textarea_field($data['post_content']);
+        $data['post_title'] = sanitize_text_field($data['post_title']);
+    }
+    if($data['post_type'] == 'note' AND $data['post_status'] != 'trash'){
+        $data['post_status'] ="private";
+    }
+    return $data;
+}
+
+//10 is the priority of a callback function. if we had two add_filters one after the other, the one with the lowest number will run first.
+//last arg means we want our function to work with two parameters.
+add_filter('wp_insert_post_data', 'makeNotePrivate', 10, 2);
+
 ?>
