@@ -33,7 +33,7 @@ class MyNotes {
     //Methods will go here
     editNote(e) {
         var thisNote = $(e.target).parents('li');
-        if(this.state.inUse){
+        if (this.state.inUse && thisNote.find('.note-title-field').val() != this.state.title){
             this.makeNoteReadOnly(this.state.previousNote);
         }
         if(thisNote.find(".edit-note").hasClass('js-cancel')){
