@@ -19,17 +19,22 @@
  */
 
 // ** MySQL settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
-define('DB_NAME', 'wp_myblog');
 
-/** MySQL database username */
-define('DB_USER', 'hckia');
-
-/** MySQL database password */
-define('DB_PASSWORD', 'R0mbl3injungl385!');
-
-/** MySQL hostname */
-define('DB_HOST', 'localhost');
+//this is an example where we'd push wp-config.php, but don't want to modify DB params in both places (local and host)
+// MAKE SURE TO UPDATE SALTS
+if(file_exists(dirname(__FILE__) . '/local.php')){
+	// use local db params
+	define('DB_NAME', 'dbname');
+	define('DB_USER', 'dbuser');
+	define('DB_PASSWORD', 'dbpass');
+	define('DB_HOST', 'localhost');
+} else {
+	// use host db params
+	define('DB_NAME', 'dbname');
+	define('DB_USER', 'dbuser');
+	define('DB_PASSWORD', 'dbpass');
+	define('DB_HOST', 'somesitedotcom');
+}
 
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8');
